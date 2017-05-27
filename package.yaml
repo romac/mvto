@@ -1,0 +1,70 @@
+name: mvto
+version: '0.1.0.0'
+category: Development
+author: Romain Ruetschi
+maintainer: romain.ruetschi@gmail.com
+copyright: 2017 Romain Ruetschi
+license: BSD3
+homepage: https://github.com/romac/haskell-mvto#readme
+extra-source-files:
+  - README.md
+
+dependencies:
+  - base >=4.7 && <5
+  - containers
+  - freer
+  - lens
+  - protolude
+  - newtype
+  - dependent-map
+  - dependent-sum
+
+executables:
+  mvto:
+    main: Main.hs
+    source-dirs: src
+
+default-extensions:
+  - BangPatterns
+  - ConstrainedClassMethods
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveDataTypeable
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveTraversable
+  - DoAndIfThenElse
+  - EmptyDataDecls
+  - ExistentialQuantification
+  - ExplicitForAll
+  - ExplicitNamespaces
+  - FlexibleContexts
+  - FlexibleContexts
+  - FlexibleInstances
+  - ForeignFunctionInterface
+  - GADTs
+  - InstanceSigs
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - NamedWildCards
+  - OverloadedStrings
+  - OverloadedLists
+  - PackageImports
+  - PatternGuards
+  - PolyKinds
+  - QuasiQuotes
+  - RankNTypes
+  - RecordWildCards
+  - RecursiveDo
+  - StandaloneDeriving
+  - TemplateHaskell
+  - TypeFamilies
+  - TypeFamilies
+  - TypeOperators
+  - UnboxedTuples
+
