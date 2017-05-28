@@ -5,7 +5,7 @@ module MVTO.Transaction where
 
 import           Protolude
 
-import           Unsafe.Coerce (unsafeCoerce)
+import           Data.Coerce  (coerce)
 
 import           Data.Set     (Set)
 import qualified Data.Set     as Set
@@ -36,10 +36,10 @@ newtype TransactionId = TransactionId (TS TSTransaction)
   deriving (Eq, Ord, Show, Read)
 
 idToRTS :: TransactionId -> RTS
-idToRTS = unsafeCoerce
+idToRTS = coerce
 
 idToWTS :: TransactionId -> WTS
-idToWTS = unsafeCoerce
+idToWTS = coerce
 
 data Transaction = Transaction
   { _transactionId          :: TransactionId

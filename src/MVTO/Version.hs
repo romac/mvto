@@ -7,7 +7,6 @@ import           Protolude
 import           Control.Lens
 
 data TSRead
-
 data TSWrite
 
 newtype TS a =
@@ -15,7 +14,6 @@ newtype TS a =
   deriving (Eq, Ord, Show, Read)
 
 type RTS = TS TSRead
-
 type WTS = TS TSWrite
 
 newtype Key =

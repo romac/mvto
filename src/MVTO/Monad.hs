@@ -70,10 +70,12 @@ rollback = undefined
 checkExists :: Transaction -> MVTO ()
 checkExists xact = do
   xacts <- getState $. transactions
-  unless (Set.member xact xacts) (throwError (TransactionNotRunning xact))
+  unless (Set.member xact xacts) $
+    throwError (TransactionNotRunning xact)
 
 checkRunning :: Transaction -> MVTO ()
 checkRunning xact = do
   checkExists xact
-  unless (isRunning xact) (throwError (TransactionNotRunning xact))
+  unless (isRunning xact) $
+    throwError (TransactionNotRunning xact)
 
