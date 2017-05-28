@@ -14,6 +14,7 @@ dependencies:
   - containers
   - freer
   - lens
+  - mtl
   - protolude
   - newtype
   - dependent-map
@@ -23,6 +24,10 @@ executables:
   mvto:
     main: Main.hs
     source-dirs: src
+
+ghc-options:
+  - -Wall
+  - -Wno-name-shadowing
 
 default-extensions:
   - BangPatterns
@@ -44,6 +49,7 @@ default-extensions:
   - FlexibleContexts
   - FlexibleInstances
   - ForeignFunctionInterface
+  - FunctionalDependencies
   - GADTs
   - InstanceSigs
   - KindSignatures
@@ -52,8 +58,9 @@ default-extensions:
   - MultiWayIf
   - NamedFieldPuns
   - NamedWildCards
-  - OverloadedStrings
+  - NoImplicitPrelude
   - OverloadedLists
+  - OverloadedStrings
   - PackageImports
   - PatternGuards
   - PolyKinds
@@ -63,8 +70,7 @@ default-extensions:
   - RecursiveDo
   - StandaloneDeriving
   - TemplateHaskell
-  - TypeFamilies
+  - TypeApplications
   - TypeFamilies
   - TypeOperators
   - UnboxedTuples
-

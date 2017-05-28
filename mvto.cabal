@@ -20,7 +20,8 @@ extra-source-files:
 executable mvto
   hs-source-dirs:
       src
-  default-extensions: BangPatterns ConstrainedClassMethods ConstraintKinds DataKinds DefaultSignatures DeriveDataTypeable DeriveFoldable DeriveFunctor DeriveGeneric DeriveTraversable DoAndIfThenElse EmptyDataDecls ExistentialQuantification ExplicitForAll ExplicitNamespaces FlexibleContexts FlexibleContexts FlexibleInstances ForeignFunctionInterface GADTs InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns NamedWildCards OverloadedStrings OverloadedLists PackageImports PatternGuards PolyKinds QuasiQuotes RankNTypes RecordWildCards RecursiveDo StandaloneDeriving TemplateHaskell TypeFamilies TypeFamilies TypeOperators UnboxedTuples
+  default-extensions: BangPatterns ConstrainedClassMethods ConstraintKinds DataKinds DefaultSignatures DeriveDataTypeable DeriveFoldable DeriveFunctor DeriveGeneric DeriveTraversable DoAndIfThenElse EmptyDataDecls ExistentialQuantification ExplicitForAll ExplicitNamespaces FlexibleContexts FlexibleContexts FlexibleInstances ForeignFunctionInterface FunctionalDependencies GADTs InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns NamedWildCards NoImplicitPrelude OverloadedLists OverloadedStrings PackageImports PatternGuards PolyKinds QuasiQuotes RankNTypes RecordWildCards RecursiveDo StandaloneDeriving TemplateHaskell TypeApplications TypeFamilies TypeOperators UnboxedTuples
+  ghc-options: -Wall -Wno-name-shadowing
   main-is: Main.hs
   default-language: Haskell2010
   build-depends:
@@ -28,11 +29,15 @@ executable mvto
     , containers
     , freer
     , lens
+    , mtl
     , protolude
     , newtype
     , dependent-map
     , dependent-sum
   other-modules:
+      MVTO.Error
+      MVTO.Lens
+      MVTO.Monad
       MVTO.MVTOState
       MVTO.Transaction
       MVTO.Version
