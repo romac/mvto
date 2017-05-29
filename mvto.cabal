@@ -27,14 +27,12 @@ executable mvto
   build-depends:
       base >=4.7 && <5
     , containers
-    , freer
     , lens
     , mtl
     , protolude
-    , newtype
-    , dependent-map
-    , dependent-sum
+    , transformers
   other-modules:
+      Control.Monad.Fresh
       MVTO.Error
       MVTO.Lens
       MVTO.Monad

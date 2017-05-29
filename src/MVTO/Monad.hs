@@ -1,59 +1,60 @@
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module MVTO.Monad where
 
-import           Protolude                     hiding (State, get, put, state, throwError, (&))
+import           Protolude           hiding ((&))
 
-import           Control.Monad                 (unless, when)
+import           Control.Monad       (unless, when)
+import           Control.Monad.Fresh (FreshT, MonadFresh, fresh)
+-- import           Control.Monad.Trans.Class
 
-import           Control.Monad.Freer           (Eff, Member)
-import           Control.Monad.Freer.Exception (Exc, throwError)
-import           Control.Monad.Freer.Fresh     (Fresh, fresh)
-import           Control.Monad.Freer.State     (State, get, put)
-
-import qualified Data.Map.Strict               as Map
-import qualified Data.Set                      as Set
+import qualified Data.Map.Strict     as Map
+import qualified Data.Set            as Set
 
 import           Control.Lens
 
 import           MVTO.Error
-import           MVTO.Lens
 import           MVTO.MVTOState
 import           MVTO.Transaction
 import           MVTO.Version
 
-type MVTO = Eff '[State MVTOState, Exc MVTOError, Fresh]
+newtype MVTOT m a =
+  MVTOT (ExceptT MVTOError
+          (StateT MVTOState
+            (FreshT Int m))
+              a)
+  deriving
+    ( Functor
+    , Applicative
+    , Monad
+    , MonadState MVTOState
+    , MonadFresh Int
+    , MonadError MVTOError
+    ) -- , MonadTrans)
 
-getState :: MVTO MVTOState
-getState = get
+type MVTO = MVTOT Identity
 
-putState :: MVTOState -> MVTO ()
-putState = put
-
-freshId :: Member Fresh r => Eff r TransactionId
+freshId :: MonadFresh Int m => m TransactionId
 freshId = TransactionId . TS <$> fresh
 
 beginTransaction :: MVTO Transaction
 beginTransaction = do
   id <- freshId
   let xact = newTransaction id Running
-  state <- getState
-  put $ state & lastTransactionId .~ id
-              & transactions %~ Set.insert xact
+  lastTransactionId .= id
+  transactions %= Set.insert xact
   pure xact
 
 insert :: Transaction -> Key -> Int -> MVTO ()
 insert xact key value = do
   checkRunning xact
-  exists <- Map.member key <$> getState $. versions
+  exists <- versions `uses` Map.member key
   when exists $ do
     rollback xact
     throwError (KeyAlreadyExists key)
 
   let v = Version key value (idToRTS (xact^.id)) (idToWTS (xact^.id))
-  state <- getState
-  let vs = at key .~ Just [v] $ state^.versions
-  putState $ state & versions .~ vs
+  versions . at key .= Just [v]
 
 read :: Transaction -> Key -> MVTO Int
 read = undefined
@@ -69,7 +70,7 @@ rollback = undefined
 
 checkExists :: Transaction -> MVTO ()
 checkExists xact = do
-  xacts <- getState $. transactions
+  xacts <- use transactions
   unless (Set.member xact xacts) $
     throwError (TransactionNotRunning xact)
 

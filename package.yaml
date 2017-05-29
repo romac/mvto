@@ -12,13 +12,10 @@ extra-source-files:
 dependencies:
   - base >=4.7 && <5
   - containers
-  - freer
   - lens
   - mtl
   - protolude
-  - newtype
-  - dependent-map
-  - dependent-sum
+  - transformers
 
 executables:
   mvto:
